@@ -1,0 +1,54 @@
+{
+  "name": "wise-and-foolish-builders",
+  "productName": "The Wise & Foolish Builders",
+  "version": "1.0.0",
+  "description": "A playable 2D cutaway building strategy game on Matthew 7:24-27",
+  "main": "main.js",
+  "author": {
+    "name": "Mubogi"
+  },
+  "license": "MIT",
+  "private": true,
+  "build": {
+    "appId": "com.mubogi.wisebuilders",
+    "productName": "The Wise & Foolish Builders",
+    "directories": {
+      "output": "../build/out/desktop"
+    },
+    "files": [
+      "main.js",
+      "package.json",
+      "icon.png",
+      "www/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon.png",
+      "artifactName": "Wise-and-Foolish-Builders-${version}-win-${arch}.${ext}",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "Wise-and-Foolish-Builders-${version}-win-portable.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ],
+      "category": "Game",
+      "icon": "icon.png",
+      "artifactName": "Wise-and-Foolish-Builders-${version}-linux-${arch}.${ext}"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mubogi/the-wise-and-foolish-builders.git"
+  }
+}

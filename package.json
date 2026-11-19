@@ -1,0 +1,32 @@
+{
+  "name": "the-wise-and-foolish-builders",
+  "version": "1.0.0",
+  "description": "A playable 2D cutaway cross-section building strategy game on Matthew 7:24-27",
+  "main": "desktop/main.js",
+  "scripts": {
+    "start": "python3 -m http.server 12000",
+    "build:web": "node tools/build-web.mjs",
+    "build:apk": "node tools/build-apk.mjs",
+    "build:desktop": "node tools/build-desktop.mjs",
+    "build": "npm run build:web && npm run build:apk && npm run build:desktop"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mubogi/the-wise-and-foolish-builders.git"
+  },
+  "keywords": [],
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Mubogi/the-wise-and-foolish-builders/issues"
+  },
+  "homepage": "https://github.com/Mubogi/the-wise-and-foolish-builders#readme",
+  "dependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^25.1.8"
+  },
+  "private": true,
+  "license": "MIT"
+}

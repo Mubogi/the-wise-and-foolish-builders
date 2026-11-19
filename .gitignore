@@ -1,3 +1,7 @@
 node_modules/
+dist/
+build/
+android/assets/
+android/keystore.jks
 .DS_Store
 *.log
