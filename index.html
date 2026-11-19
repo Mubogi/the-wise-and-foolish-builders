@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Wise &amp; Foolish Builders — A Foundation of the Heart</title>
+<meta name="description" content="A playable 2D cutaway building strategy game on Matthew 7:24-27. Build above ground, dig deep below." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d3a5f'/%3E%3Cpath d='M14 34 L32 18 L50 34' stroke='%23c9973f' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M20 34 V50 M32 34 V56 M44 34 V50' stroke='%23f4ecd8' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M4 17 L16 6 L28 17" /><path d="M8 17 V27 M16 17 V29 M24 17 V27" /></svg>
+      </div>
+      <div class="brand-text">
+        <h1>The Wise &amp; Foolish Builders</h1>
+        <p>Matthew 7:24&ndash;27 &middot; Luke 6:48 &middot; 1 Corinthians 3:10&ndash;15</p>
+      </div>
+    </div>
+
+    <div class="season-pill" id="seasonPill">
+      <span class="season-name" id="seasonName">Season of Beginnings</span>
+      <span class="day-label" id="dayLabel">Day 1 of 20</span>
+      <div class="season-track" id="seasonTrack"></div>
+    </div>
+
+    <div class="topbar-actions">
+      <div class="speed" id="speedControl" role="group" aria-label="Animation speed">
+        <button type="button" data-speed="0.5" title="Half speed">0.5&times;</button>
+        <button type="button" data-speed="1" class="active" title="Normal speed">1&times;</button>
+        <button type="button" data-speed="2" title="Double speed">2&times;</button>
+        <button type="button" data-speed="4" title="Quad speed">4&times;</button>
+      </div>
+      <button type="button" class="btn ghost" id="btnBlueprint">Blueprint</button>
+      <button type="button" class="btn ghost" id="btnSave">Save</button>
+      <button type="button" class="btn ghost" id="btnLoad">Load</button>
+      <button type="button" class="btn icon" id="btnHelp" aria-label="How to play">?</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage-col">
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="stage" width="1200" height="740" aria-label="Cutaway view of the builder's house above and below ground"></canvas>
+
+        <div class="canvas-overlay">
+          <div class="weather-chip" id="weatherChip">
+            <span class="wc-dot"></span><span id="weatherText">Clear skies</span>
+          </div>
+          <div class="forecast" id="forecast">
+            <span class="fc-label">Storm readiness</span>
+            <div class="fc-bar"><i id="forecastFill"></i></div>
+            <span class="fc-text" id="forecastText">Season 1 storm in 4 days</span>
+          </div>
+        </div>
+
+        <div class="storm-banner" id="stormBanner" hidden>
+          <div class="sb-name" id="stormName">Financial Loss</div>
+          <div class="sb-sub" id="stormSub">The wind beats against the house</div>
+        </div>
+
+        <div class="collapse-toast" id="collapseToast" hidden></div>
+      </div>
+
+      <div class="deck" id="deck"></div>
+
+      <div class="free-actions" id="freeActions"></div>
+    </section>
+
+    <aside class="rail">
+      <div class="panel" id="metersPanel">
+        <h2 class="panel-title">Ledger of the Heart</h2>
+        <div class="meters" id="meters"></div>
+      </div>
+
+      <div class="panel" id="pilingPanel">
+        <h2 class="panel-title">Foundation Survey <span class="panel-hint" id="pilingHint">7 pilings</span></h2>
+        <div class="pilings" id="pilings"></div>
+        <div class="piling-legend">
+          <span><i class="dot rock"></i>Anchored in rock</span>
+          <span><i class="dot sand"></i>Resting on sand</span>
+        </div>
+      </div>
+
+      <div class="panel grow" id="logPanel">
+        <h2 class="panel-title">Builder's Journal</h2>
+        <ul class="log-list" id="logList"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="ticker">
+    <span class="ticker-mark" aria-hidden="true">&#10022;</span>
+    <span id="tickerText">Everyone who hears these words of mine and puts them into practice is like a wise man who built his house on the rock.</span>
+  </footer>
+
+</div>
+
+<div class="modal-root" id="modalRoot" hidden>
+  <div class="modal-scrim" data-close="1"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <header class="modal-head">
+      <div>
+        <h2 id="modalTitle">Title</h2>
+        <p id="modalSub">Subtitle</p>
+      </div>
+      <button type="button" class="btn icon" data-close="1" aria-label="Close">&times;</button>
+    </header>
+    <div class="modal-body" id="modalBody"></div>
+    <footer class="modal-foot" id="modalFoot"></footer>
+  </div>
+</div>
+
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
