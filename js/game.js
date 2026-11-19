@@ -63,3 +63,11 @@ if (!seen) {
 
 // Expose for debugging in the console.
 window.__twfb = { engine, scene, ui };
+
+// Register the offline cache. Skipped on file:// (Android/Electron shells),
+// where a service worker cannot register and is not needed.
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}

@@ -15,17 +15,30 @@ build step required to play in a browser.
 | Platform | How |
 |---|---|
 | **Browser (online)** | https://mubogi.github.io/the-wise-and-foolish-builders/ |
-| **Android** | Download `Wise-and-Foolish-Builders-1.0.0.apk` from [Releases](../../releases) |
-| **Windows** | Download `Wise-and-Foolish-Builders-1.0.0-win-x64.zip`, unzip, run the `.exe` |
-| **Linux** | Download the `.AppImage` (`chmod +x`, then run) or the `.tar.gz` |
+| **Android 5.0+** | `Wise-and-Foolish-Builders-1.0.0.apk` from [Releases](../../releases) |
+| **iPhone / iPad** | Open the site in Safari, then Share → *Add to Home Screen* |
+| **Windows x64** | `...-win-x64.zip` — portable, unzip and run |
+| **Linux x64** | `.AppImage`, `.deb`, or `.tar.gz` |
 | **From source** | `npm start`, then open http://localhost:12000 |
 
-The desktop and Android builds are fully offline. Saves are stored locally.
+Every build runs fully offline. Progress is saved locally on each platform.
+
+### Which download?
+
+- **Android** — install the APK. It is a native WebView app, 98 KB, no Play Store needed.
+- **iPhone / iPad** — there is no APK equivalent for iOS without an Apple Developer
+  account, so the game installs as a **PWA**: open the site in Safari, tap Share,
+  then *Add to Home Screen*. It gets a real icon, runs fullscreen, and works
+  offline after the first load.
+- **Windows** — the `.zip` is portable: unzip anywhere and run the `.exe`. No
+  installer, no admin rights, nothing written outside your user folder.
+- **Linux** — `.deb` for Debian/Ubuntu, `.AppImage` for everything else.
 
 ### Android install
 
-The APK is signed with a self-signed key, so Android will warn about an unknown
-source. That is expected for a game distributed outside the Play Store:
+The APK is signed with a release key (RSA 4096, valid to 2056). Because it is
+distributed outside the Play Store, Android will still warn about an unknown
+source. That is expected:
 
 1. Copy the APK to your device and tap it.
 2. Allow "install unknown apps" for your file manager when prompted.
@@ -101,9 +114,15 @@ npm run build:apk      # → build/out/*.apk
 ```
 
 The build script drives `aapt2`, `javac`, `d8`, `zipalign`, and `apksigner`
-directly — no Gradle. A debug keystore is generated on first run at
-`android/keystore.jks`. **Replace it with your own key before distributing
-updates**, since Android requires the same signing key for every update.
+directly — no Gradle. It signs with `android/signing/release.jks`, reading the
+password from `android/signing/keystore-password.txt` or `TWFB_KEY_PASS`.
+
+To create your own release key:
+
+```bash
+keytool -genkeypair -v -keystore android/signing/release.jks \
+  -alias wisebuilders -keyalg RSA -keysize 4096 -validity 10950
+```
 
 ### Desktop
 
@@ -111,11 +130,16 @@ updates**, since Android requires the same signing key for every update.
 npm run build:desktop                                    # Linux + Windows
 node tools/build-desktop.mjs --linux AppImage tar.gz     # Linux only
 node tools/build-desktop.mjs --win zip                   # Windows only
+node tools/build-desktop.mjs --linux deb                 # Debian/Ubuntu
 ```
 
-Building the Windows target on Linux works because `signAndEditExecutable` is
+Building the Windows zip on Linux works because `signAndEditExecutable` is
 disabled. Enabling it (to set a custom exe icon or embed a signature) requires
 Wine.
+
+An NSIS `setup.exe` can be added by putting `nsis` in the win target list, but
+**it cannot be built on Linux without Wine** — electron-builder needs Wine to run
+`makensis`. Build that target on a Windows machine or a `windows-latest` runner.
 
 ---
 
@@ -132,6 +156,10 @@ js/game.js            bootstrap and main loop
 desktop/              Electron wrapper (main process + package manifest)
 android/              manifest, resources, icons, WebView activity
 tools/                build scripts for web, APK, and desktop
+manifest.webmanifest  PWA manifest (iOS install, fullscreen, icons)
+sw.js                 service worker — offline cache
+assets/               PWA icons
+android/signing/      release keystore (gitignored, back this up)
 ```
 
 `dist/` and `build/` are generated and not committed.

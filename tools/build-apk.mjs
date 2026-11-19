@@ -15,9 +15,14 @@ const JAVA_HOME = process.env.JAVA_HOME || '/tmp/andtools/jdk-17.0.21.1+2';
 
 const BUILD = path.join(ROOT, 'build/apk');
 const OUT = path.join(ROOT, 'build/out');
-const KEYSTORE = path.join(ROOT, 'android/keystore.jks');
+// Release signing material lives outside version control.
+const SIGNING = path.join(ROOT, 'android/signing');
+const KEYSTORE = path.join(SIGNING, 'release.jks');
 const KEY_ALIAS = 'wisebuilders';
-const KEY_PASS = 'wisebuilders';
+const PASS_FILE = path.join(SIGNING, 'keystore-password.txt');
+const KEY_PASS = existsSync(PASS_FILE)
+  ? (await readFile(PASS_FILE, 'utf8')).trim()
+  : process.env.TWFB_KEY_PASS;
 
 const run = (cmd, args, opts = {}) => {
   process.stdout.write(`  ${path.basename(cmd)} ${args.slice(0, 3).join(' ')}...\n`);
@@ -106,6 +111,11 @@ const aligned = path.join(BUILD, 'aligned.apk');
 run(path.join(BT, 'zipalign'), ['-f', '-p', '4', unsigned, aligned]);
 
 console.log('== keystore ==');
+if (!KEY_PASS) {
+  throw new Error(
+    `Release keystore password not found. Expected ${PASS_FILE} or TWFB_KEY_PASS.`
+  );
+}
 if (!existsSync(KEYSTORE)) {
   run(`${JAVA_HOME}/bin/keytool`, [
     '-genkeypair', '-v',

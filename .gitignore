@@ -3,5 +3,12 @@ dist/
 build/
 android/assets/
 android/keystore.jks
+
+# Signing material must never be committed.
+android/signing/
+*.jks
+*.keystore
+keystore-password.txt
+
 .DS_Store
 *.log

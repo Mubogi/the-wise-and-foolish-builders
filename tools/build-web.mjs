@@ -26,11 +26,24 @@ await build({
 });
 
 await copyFile(path.join(root, 'css/style.css'), path.join(dist, 'css/style.css'));
+await copyFile(path.join(root, 'manifest.webmanifest'), path.join(dist, 'manifest.webmanifest'));
+await copyFile(path.join(root, 'sw.js'), path.join(dist, 'sw.js'));
+await mkdir(path.join(dist, 'assets'), { recursive: true });
+await copyFile(path.join(root, 'assets/assets-icon-192.png'), path.join(dist, 'assets/assets-icon-192.png'));
+await copyFile(path.join(root, 'assets/assets-icon-512.png'), path.join(dist, 'assets/assets-icon-512.png'));
 
 // Rewrite the module script tag to a plain script and drop the module attribute.
 let html = await readFile(path.join(root, 'index.html'), 'utf8');
 html = html.replace('<script type="module" src="js/game.js"></script>', '<script src="js/game.js"></script>');
 await writeFile(path.join(dist, 'index.html'), html);
+
+// The bundled build ships one script, so cache that instead of the modules.
+let sw = await readFile(path.join(root, 'sw.js'), 'utf8');
+sw = sw.replace(
+  /  '\.\/js\/data\.js',\n  '\.\/js\/state\.js',\n  '\.\/js\/render\.js',\n  '\.\/js\/ui\.js',\n/,
+  ''
+);
+await writeFile(path.join(dist, 'sw.js'), sw);
 
 if (!existsSync(path.join(dist, 'js/game.js'))) throw new Error('bundle missing');
 console.log('dist/ ready');

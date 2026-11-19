@@ -40,11 +40,27 @@
     "linux": {
       "target": [
         "AppImage",
+        "deb",
         "tar.gz"
       ],
       "category": "Game",
       "icon": "icon.png",
-      "artifactName": "Wise-and-Foolish-Builders-${version}-linux-${arch}.${ext}"
+      "artifactName": "Wise-and-Foolish-Builders-${version}-linux-${arch}.${ext}",
+      "maintainer": "Mubogi <noreply@example.com>",
+      "synopsis": "Build a life on the rock, not the sand"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Wise & Foolish Builders",
+      "artifactName": "Wise-and-Foolish-Builders-${version}-win-x64-setup.${ext}"
+    },
+    "deb": {
+      "packageCategory": "games",
+      "priority": "optional"
     }
   },
   "repository": {
